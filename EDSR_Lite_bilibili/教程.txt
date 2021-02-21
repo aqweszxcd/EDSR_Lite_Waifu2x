@@ -1,0 +1,50 @@
+Code reference from (代码参考自) https://github.com/krasserm/super-resolution
+不少代码都是直接照搬的 要想学具体的代码 建议直接看这个大佬的项目
+
+目标：做一个性能过得去的机器学习超分辨率
+
+为啥有这个目标 为了帮助大家入门
+因为我看绝大多数油管搬运vtb视频都比较模糊
+那为啥大家不用waifu2x超分辨率处理下呢 我猜是因为这东西太慢了
+anime4k现在有没有机器学习不清楚 但是老版本是传统算法 效果不咋滴
+
+保证1050ti啥的也能跑个不错速度
+首先看这个软件 这是github上面大佬做的gui
+里面比较实用的是waifu2x_ncnn_vulkan 效果好的很 就是慢
+anime4k效果不好
+那我教大家做个折中的
+我不是相关专业的(我是集成电路的 还比较菜) 所以我不会做gui 就很尴尬 就只能做个教程了
+
+windows下安装最新的显卡驱动(n卡)
+安装个anaconda
+首先新建一个python3.8虚拟环境
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+conda config --set show_channel_urls yes
+conda install cudatoolkit=10.1 cudnn=7.6 tensorflow-gpu=2.3.0 jupyter opencv matplotlib
+(老实说我作为初学者卡在建立环境上好久 最后都学会了之后 给大家最简单的解决方案 就运行这几句话)
+(比百度谷歌出来的那些大佬的方法好用多了 有些"大佬"连版本都不指定 绝了)
+
+这是超分辨率模型
+这个是训练
+这句话是导入上次的训练结果 第一次的话删掉
+这是训练参数 按照scale=2训练
+这个模型是edsr改的
+4个残差模块 25filters
+我觉得效果还凑合 速度也不错
+这个我之前训练过 就不继续了
+
+大致性能(1080p升4k)
+我的辣鸡笔记本1050TI超了点频 fps: 1.83
+租的云上的2080TI fps: 6.49
+(云上的cpu性能太差了 显卡占用率50%多点 而且我严重怀疑云上的显卡
+为了省电运行频率被压得很低 正常2080TI性能不应该这样 鸡贼)
+租的云上的P100 fps: 4.976431899399594
+租的云上的V100 fps: 6.54347209144126
+租的云上的3090 没抢到 如果是自用的3090 cpu硬盘环境理想 fps应该能跑到15以上(我猜的)
+(这些云是真的不靠谱 cpu弱 显卡压频率)
+(3090理论性能大概是我那个超了频的笔记本1050TI的10倍左右)
+
+话说 按这个效果完全可用啊
+对比数据 waifu2x-ncnn-vulkan(fp16) fps：0.30
